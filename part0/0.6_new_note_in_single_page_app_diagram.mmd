@@ -1,0 +1,27 @@
+sequenceDiagram
+    participant user
+    participant browser
+    participant server
+
+    Note right of user: The user types the text in note textbox and clicks on the 'Save' button
+
+    Note right of browser: onsubmit event handler is triggered
+
+    browser->>browser: form.onsubmit callback executes
+    browser->>browser: e.preventDefault() (prevents page reload)
+
+    Note right of browser: Create note object and updates UI immediately
+
+    browser->>browser: notes.push(note)
+    browser->>browser: redrawNotes() updates DOM
+
+    Note right of user: New note appears instantly without page reload
+
+    browser->>server: POST /exampleapp/new_note_spa
+    activate server
+    server-->>browser: 201 success code with JSON response as {"message":"note created"}
+    deactivate server
+
+    Note right of browser: onreadystatechange callback executes
+
+    browser->>browser: Response is logged in console
